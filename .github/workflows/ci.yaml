@@ -81,7 +81,7 @@ jobs:
         uses: softprops/action-gh-release@v2.6.2
         with:
           tag_name: latest
-          name: "grobid-cli (latest)"
+          name: "Grobid CLI (latest)"
           body: ${{ steps.readme.outputs.body }}
           files: |
             dist/grobid

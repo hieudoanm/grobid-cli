@@ -1,4 +1,4 @@
-# grobid-cli
+# Grobid CLI
 
 Convert PDF articles to Markdown so AI can work better with them. Built upon [GROBID](https://github.com/grobidOrg).
 
@@ -8,7 +8,7 @@ AI models struggle to extract clean, structured content from PDFs. Raw PDFs are 
 
 ## The Solution
 
-grobid-cli uses [GROBID](https://github.com/grobidOrg) (GeneRation Of BIbliographic Data) to extract structured content from PDFs and convert them to clean Markdown with rich metadata in frontmatter. This makes documents AI-friendly and easy to process.
+grobid cli uses [GROBID](https://github.com/grobidOrg) (GeneRation Of BIbliographic Data) to extract structured content from PDFs and convert them to clean Markdown with rich metadata in frontmatter. This makes documents AI-friendly and easy to process.
 
 ## Features
 
@@ -104,11 +104,11 @@ make test    # Run tests
 make build   # Build binary with PyInstaller
 ```
 
-## Why grobid-cli?
+## Why Grobid CLI?
 
 The problem: AI does not work well with PDFs. Raw PDF text extraction loses structure, citations break context, and formatting confuses models.
 
-The solution: grobid-cli leverages GROBID's state-of-the-art PDF parsing to produce clean, structured Markdown that LLMs can understand and reason about effectively.
+The solution: grobid cli leverages GROBID's state-of-the-art PDF parsing to produce clean, structured Markdown that LLMs can understand and reason about effectively.
 
 ## License
 
