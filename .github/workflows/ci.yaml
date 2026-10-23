@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint / Test / Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@v7.1.0
+        with:
+          python-version: "3.15.1"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]" pyinstaller pytest-cov ruff black
+
+      - name: Run lint
+        run: |
+          ruff check src tests
+          black --check src tests
+
+      - name: Run tests
+        run: |
+          pytest tests -v --cov=src/grobid --cov-report=term-missing
+
+      - name: Build binary
+        run: |
+          pyinstaller --onefile --name grobid src/grobid/main.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: grobid-linux-amd64
+          path: dist/grobid
+          retention-days: 7
+
+  release-latest:
+    name: Release (latest)
+    needs: [test]
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+
+      - name: Read release notes from README.md
+        id: readme
+        run: |
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          cat README.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Download binary
+        uses: actions/download-artifact@v8.0.2
+        with:
+          name: grobid-linux-amd64
+          path: dist
+
+      - name: Delete existing "latest" release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          git push origin :refs/tags/latest || true
+
+      - name: Create/Update "latest" Release
+        uses: softprops/action-gh-release@v3.0.3
+        with:
+          tag_name: latest
+          name: "Grobid CLI (latest)"
+          body: ${{ steps.readme.outputs.body }}
+          files: |
+            dist/grobid
+          draft: false
+          prerelease: false
+          make_latest: true
