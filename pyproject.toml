@@ -38,7 +38,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.uv]
 dev-dependencies = [
-    "pre-commit==4.6.2",
+    "pre-commit==4.7.0",
     "pytest",
     "ruff",
 ]
