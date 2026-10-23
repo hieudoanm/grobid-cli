@@ -14,12 +14,12 @@ jobs:
     name: Lint, Test, Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.4.0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.6.0
         with:
-          python-version: "3.15"
+          python-version: "3.15.1"
 
       - name: Install dependencies
         run: |
@@ -40,7 +40,7 @@ jobs:
           pyinstaller --onefile --name grobid src/grobid/main.py
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: grobid-linux-amd64
           path: dist/grobid
@@ -55,7 +55,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.4.0
 
       - name: Read release notes from README.md
         id: readme
@@ -65,7 +65,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Download binary
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.3.0
         with:
           name: grobid-linux-amd64
           path: dist
@@ -78,7 +78,7 @@ jobs:
           git push origin :refs/tags/latest || true
 
       - name: Create/Update "latest" Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.6.2
         with:
           tag_name: latest
           name: "grobid-cli (latest)"
