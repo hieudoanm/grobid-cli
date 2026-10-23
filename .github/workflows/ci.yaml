@@ -40,7 +40,7 @@ jobs:
           pyinstaller --onefile --name grobid src/grobid/main.py
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: grobid-linux-amd64
           path: dist/grobid
@@ -65,7 +65,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Download binary
-        uses: actions/download-artifact@v4.3.0
+        uses: actions/download-artifact@v8.0.2
         with:
           name: grobid-linux-amd64
           path: dist
